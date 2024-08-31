@@ -6,14 +6,12 @@
     <title>VSCodeライクエディタ（T-SQLシンタックスハイライト版）</title>
     <link id="themeStylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <!-- 行番号表示用のプラグイン -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
     <style>
         body, html {
             margin: 0;
             padding: 0;
             height: 100vh;
-            font-family: 'Consolas', 'Courier New', 'Menlo', 'Monaco', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'MS Gothic', 'NSimSun', 'GulimChe', 'Courier', monospace;
+            font-family: 'Consolas', 'Courier New', monospace;
             background-color: #1e1e1e;
             color: #d4d4d4;
         }
@@ -24,6 +22,20 @@
             display: flex;
             height: 100vh;
             overflow: hidden;
+        }
+        .line-numbers {
+            width: 60px;
+            padding: 10px 0 10px 0;
+            text-align: right;
+            background-color: #1e1e1e;
+            color: #858585;
+            user-select: none;
+            overflow-y: hidden;
+        }
+        .line-numbers div {
+            padding-right: 10px;
+            height: 20px;
+            line-height: 20px;
         }
         .editor-wrapper {
             flex-grow: 1;
@@ -73,25 +85,21 @@
         ::-webkit-scrollbar-thumb:hover {
             background-color: #4f4f4f;
         }
-        
     </style>
 </head>
 <body>
     <div class="editor-container">
+        <div class="line-numbers" id="lineNumbers"></div>
         <div class="editor-wrapper">
             <textarea id="codeInput" spellcheck="false" wrap="off"></textarea>
-            <pre class="line-numbers" style="margin:0; height: -webkit-fill-available;">
-                <code id="highlightedCode" class="language-sql"></code>
-            </pre>
+            <pre style="margin:0; height: -webkit-fill-available;"><code id="highlightedCode" class="language-sql"></code></pre>
         </div>
     </div>
 
     <!-- プルダウンメニューを使用してテーマを切り替える -->
     <label for="themeSelector">Choose a theme:</label>
     <select id="themeSelector">
-        <option value="prism-okaidia">Prism Okaidia</option>
-        <option value="prism-tomorrow">Prism Tomorrow</option>
-        <option value="prism-base16-ateliersulphurpool">Prism Base16 Atelier Sulphurpool</option>
+        <!-- ここにオプションが動的に生成されます -->
     </select>
 
     <!-- プルダウンメニューを使用してフォントサイズを切り替える -->
@@ -101,16 +109,41 @@
         <option value="medium" selected>Medium</option>
         <option value="large">Large</option>
     </select>
-  
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
     <script src="script.js"></script>
     <script>
+        const themeConfig = {
+            'prism-tomorrow': 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css',
+            'prism-base16-ateliersulphurpool': 'https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-base16-ateliersulphurpool.light.min.css',
+            'prism-okaidia': 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css'
+        };
+
+        const fontSizeConfig = {
+            'small': '12px',
+            'medium': '14px',
+            'large': '18px'
+        };
 
         const codeInput = document.getElementById('codeInput');
         const highlightedCode = document.getElementById('highlightedCode');
+        const lineNumbers = document.getElementById('lineNumbers');
         const themeSelector = document.getElementById('themeSelector');
         const fontSizeSelector = document.getElementById('fontSizeSelector');
+
+        // themeConfigからオプションを動的に生成
+        Object.keys(themeConfig).forEach(theme => {
+            const option = document.createElement('option');
+            option.value = theme;
+            option.textContent = theme.replace('prism-', '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            themeSelector.appendChild(option);
+        });
+
+        function updateLineNumbers() {
+            const lines = codeInput.value.split('\n');
+            lineNumbers.innerHTML = lines.map((_, index) => `<div>${index + 1}</div>`).join('');
+        }
 
         function updateHighlightedCode() {
             highlightedCode.textContent = codeInput.value;
@@ -120,6 +153,7 @@
         function syncScroll() {
             highlightedCode.scrollTop = codeInput.scrollTop;
             highlightedCode.scrollLeft = codeInput.scrollLeft;
+            lineNumbers.scrollTop = codeInput.scrollTop;
         }
 
         function updateFontSize(size) {
@@ -130,6 +164,7 @@
         }
 
         codeInput.addEventListener('input', () => {
+            updateLineNumbers();
             updateHighlightedCode();
         });
 
@@ -148,6 +183,7 @@
         });
 
         // 初期化
+        updateLineNumbers();
         updateHighlightedCode();
 
         document.addEventListener('DOMContentLoaded', function() {
