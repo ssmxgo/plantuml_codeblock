@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,13 +8,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link id="themeStylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet">
     <style>
-        body, html {
+        body,
+        html {
             height: 100vh;
             font-family: 'Consolas', 'Courier New', monospace;
             background-color: #1e1e1e;
             color: #d4d4d4;
             margin: 0;
         }
+
         .line-numbers {
             width: 60px;
             text-align: right;
@@ -26,11 +29,15 @@
             padding-top: 8px;
             padding-bottom: 8px;
         }
+
         .editor-wrapper {
             position: relative;
             overflow: hidden;
+            height: 100%;
         }
-        #codeInput, #highlightedCode {
+
+        #codeInput,
+        #highlightedCode {
             position: absolute;
             top: 0;
             left: 0;
@@ -42,6 +49,7 @@
             tab-size: 4;
             white-space: pre;
             overflow-x: auto;
+            overflow-y: auto;
             background: transparent;
             resize: none;
             outline: none;
@@ -49,44 +57,75 @@
             padding: 8px;
             margin: 0;
         }
+
         #codeInput {
             color: transparent;
             caret-color: white;
             z-index: 2;
         }
+
         #highlightedCode {
             pointer-events: none;
             z-index: 1;
         }
+
+        .tab-pane {
+            height: calc(100vh - 56px); /* タブの高さを引いた残りの高さを指定 */
+            overflow: hidden;
+        }
     </style>
 </head>
+
 <body>
     <div class="container-fluid p-0">
-        <div class="row g-0">
-            <div class="col-auto line-numbers" id="lineNumbers"></div>
-            <div class="col editor-wrapper">
-                <textarea id="codeInput" spellcheck="false" wrap="off" class="p-0"></textarea>
-                <pre class="m-0 h-100 p-0"><code id="highlightedCode" class="language-sql"></code></pre>
-            </div>
-        </div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#editorTab" data-bs-toggle="tab">Editor</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#themeTab" data-bs-toggle="tab">Theme</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#settingsTab" data-bs-toggle="tab">Settings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            </li>
+        </ul>
 
-        <div class="d-flex justify-content-start p-2">
-            <!-- テーマセレクター -->
-            <div class="me-3">
-                <label for="themeSelector" class="form-label">Choose a theme:</label>
-                <select id="themeSelector" class="form-select form-select-sm">
-                    <!-- ここにオプションが動的に生成されます -->
-                </select>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="editorTab">
+                <div class="row g-0 h-100">
+                    <div class="col-auto line-numbers" id="lineNumbers"></div>
+                    <div class="col editor-wrapper">
+                        <textarea id="codeInput" spellcheck="false" wrap="off" class="p-0"></textarea>
+                        <pre class="m-0 h-100 p-0"><code id="highlightedCode" class="language-sql"></code></pre>
+                    </div>
+                </div>
             </div>
-
-            <!-- フォントサイズセレクター -->
-            <div>
-                <label for="fontSizeSelector" class="form-label">Font Size:</label>
-                <select id="fontSizeSelector" class="form-select form-select-sm">
-                    <option value="small">Small</option>
-                    <option value="medium" selected>Medium</option>
-                    <option value="large">Large</option>
-                </select>
+            <div class="tab-pane fade" id="themeTab">
+                <div class="d-flex justify-content-start p-2">
+                    <!-- テーマセレクター -->
+                    <div class="me-3">
+                        <label for="themeSelector" class="form-label">Choose a theme:</label>
+                        <select id="themeSelector" class="form-select form-select-sm">
+                            <!-- ここにオプションが動的に生成されます -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="settingsTab">
+                <div class="d-flex justify-content-start p-2">
+                    <!-- フォントサイズセレクター -->
+                    <div>
+                        <label for="fontSizeSelector" class="form-label">Font Size:</label>
+                        <select id="fontSizeSelector" class="form-select form-select-sm">
+                            <option value="small">Small</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="large">Large</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -196,4 +235,5 @@
         });
     </script>
 </body>
+
 </html>
