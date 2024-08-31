@@ -8,6 +8,7 @@
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+CJK+JP:wght@400;700&family=Noto+Sans+CJK+KR:wght@400;700&family=Noto+Sans+CJK+SC:wght@400;700&display=swap"></noscript>
     <link id="themeStylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
     <style>
         body, html {
             margin: 0;
@@ -24,20 +25,6 @@
             display: flex;
             height: 100vh;
             overflow: hidden;
-        }
-        .line-numbers {
-            width: 60px;
-            padding: 10px 0 10px 0;
-            text-align: right;
-            background-color: #1e1e1e;
-            color: #858585;
-            user-select: none;
-            overflow-y: hidden;
-        }
-        .line-numbers div {
-            padding-right: 10px;
-            height: 20px;
-            line-height: 20px;
         }
         .editor-wrapper {
             font-family: 'Consolas', 'Courier New', 'Noto Sans CJK SC', 'Noto Sans CJK KR', 'Menlo', 'Monaco', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'MS Gothic', 'NSimSun', 'GulimChe', 'Courier',   'monospace';
@@ -88,15 +75,13 @@
         ::-webkit-scrollbar-thumb:hover {
             background-color: #4f4f4f;
         }
-        
     </style>
 </head>
 <body>
     <div class="editor-container">
-        <div class="line-numbers" id="lineNumbers"></div>
         <div class="editor-wrapper">
             <textarea id="codeInput" spellcheck="false" wrap="off"></textarea>
-            <pre style="margin:0; height: -webkit-fill-available;"><code id="highlightedCode" class="language-sql"></code></pre>
+            <pre style="margin:0; height: -webkit-fill-available;" class="line-numbers"><code id="highlightedCode" class="language-sql"></code></pre>
         </div>
     </div>
 
@@ -123,14 +108,8 @@
 
         const codeInput = document.getElementById('codeInput');
         const highlightedCode = document.getElementById('highlightedCode');
-        const lineNumbers = document.getElementById('lineNumbers');
         const themeSelector = document.getElementById('themeSelector');
         const fontSizeSelector = document.getElementById('fontSizeSelector');
-
-        function updateLineNumbers() {
-            const lines = codeInput.value.split('\n');
-            lineNumbers.innerHTML = lines.map((_, index) => `<div>${index + 1}</div>`).join('');
-        }
 
         function updateHighlightedCode() {
             highlightedCode.textContent = codeInput.value;
@@ -140,7 +119,6 @@
         function syncScroll() {
             highlightedCode.scrollTop = codeInput.scrollTop;
             highlightedCode.scrollLeft = codeInput.scrollLeft;
-            lineNumbers.scrollTop = codeInput.scrollTop;
         }
 
         function updateFontSize(size) {
@@ -151,7 +129,6 @@
         }
 
         codeInput.addEventListener('input', () => {
-            updateLineNumbers();
             updateHighlightedCode();
         });
 
@@ -168,10 +145,6 @@
                 updateHighlightedCode();
             }
         });
-
-        // 初期化
-        updateLineNumbers();
-        updateHighlightedCode();
 
         document.addEventListener('DOMContentLoaded', function() {
             const themeStylesheet = document.getElementById('themeStylesheet');
