@@ -13,11 +13,6 @@
             background-color: #1e1e1e;
             color: #d4d4d4;
         }
-        .editor-container {
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
         .line-numbers {
             width: 60px;
             padding: 10px 0;
@@ -26,9 +21,10 @@
             color: #858585;
             user-select: none;
             overflow-y: hidden;
+            font-size: 14px;
+            line-height: 20px;
         }
         .editor-wrapper {
-            flex-grow: 1;
             position: relative;
             overflow: hidden;
         }
@@ -64,9 +60,9 @@
 </head>
 <body>
     <div class="container-fluid p-0">
-        <div class="editor-container">
-            <div class="line-numbers" id="lineNumbers"></div>
-            <div class="editor-wrapper">
+        <div class="row g-0 editor-container">
+            <div class="col-auto line-numbers" id="lineNumbers"></div>
+            <div class="col editor-wrapper">
                 <textarea id="codeInput" spellcheck="false" wrap="off"></textarea>
                 <pre style="margin:0; height: 100%;"><code id="highlightedCode" class="language-sql"></code></pre>
             </div>
@@ -140,6 +136,8 @@
             if (fontSizeConfig[size]) {
                 codeInput.style.fontSize = fontSizeConfig[size];
                 highlightedCode.style.fontSize = fontSizeConfig[size];
+                lineNumbers.style.fontSize = fontSizeConfig[size];
+                lineNumbers.style.lineHeight = codeInput.style.lineHeight; // 行高の統一
             }
         }
 
