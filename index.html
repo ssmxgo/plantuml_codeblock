@@ -12,6 +12,7 @@
             font-family: 'Consolas', 'Courier New', monospace;
             background-color: #1e1e1e;
             color: #d4d4d4;
+            margin: 0;
         }
         .line-numbers {
             width: 60px;
@@ -22,8 +23,8 @@
             overflow-y: hidden;
             font-size: 14px;
             line-height: 20px;
-            /* padding-top: 10px; -> Bootstrapのpy-2クラスで置き換え */
-            /* padding-bottom: 10px; -> Bootstrapのpy-2クラスで置き換え */
+            padding-top: 8px;
+            padding-bottom: 8px;
         }
         .editor-wrapper {
             position: relative;
@@ -35,22 +36,22 @@
             left: 0;
             right: 0;
             bottom: 0;
-            margin: 0;
-            padding: 10px;
             font-family: inherit;
             font-size: 14px;
             line-height: 20px;
             tab-size: 4;
             white-space: pre;
             overflow-x: auto;
-        }
-        #codeInput {
-            color: transparent;
             background: transparent;
-            caret-color: white;
             resize: none;
             outline: none;
             border: none;
+            padding: 8px;
+            margin: 0;
+        }
+        #codeInput {
+            color: transparent;
+            caret-color: white;
             z-index: 2;
         }
         #highlightedCode {
@@ -62,10 +63,10 @@
 <body>
     <div class="container-fluid p-0">
         <div class="row g-0">
-            <div class="col-auto line-numbers py-2" id="lineNumbers"></div>
+            <div class="col-auto line-numbers" id="lineNumbers"></div>
             <div class="col editor-wrapper">
-                <textarea id="codeInput" spellcheck="false" wrap="off"></textarea>
-                <pre class="m-0 h-100"><code id="highlightedCode" class="language-sql"></code></pre>
+                <textarea id="codeInput" spellcheck="false" wrap="off" class="p-0"></textarea>
+                <pre class="m-0 h-100 p-0"><code id="highlightedCode" class="language-sql"></code></pre>
             </div>
         </div>
 
