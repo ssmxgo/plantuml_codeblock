@@ -97,9 +97,13 @@
         </div>
     </div>
 
-      <!-- ボタンを使用してテーマを切り替える -->
-    <button id="darkThemeBtn">Dark Theme</button>
-    <button id="lightThemeBtn">Light Theme</button>
+    <!-- プルダウンメニューを使用してテーマを切り替える -->
+    <label for="themeSelector">Choose a theme:</label>
+    <select id="themeSelector">
+        <option value="prism-okaidia">Prism Okaidia</option>
+        <option value="prism-tomorrow">Prism Tomorrow</option>
+        <option value="prism-base16-ateliersulphurpool">Prism Base16 Atelier Sulphurpool</option>
+    </select>
   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
@@ -108,6 +112,7 @@
         const codeInput = document.getElementById('codeInput');
         const highlightedCode = document.getElementById('highlightedCode');
         const lineNumbers = document.getElementById('lineNumbers');
+        const themeSelector = document.getElementById('themeSelector');
 
         function updateLineNumbers() {
             const lines = codeInput.value.split('\n');
@@ -148,37 +153,27 @@
         updateLineNumbers();
         updateHighlightedCode();
 
-
-        updateLineNumbers();
-        updateHighlightedCode();
-
         document.addEventListener('DOMContentLoaded', function() {
             const themeStylesheet = document.getElementById('themeStylesheet');
-            const body = document.body;
-            
-            document.getElementById('darkThemeBtn').addEventListener('click', () => {
-                switchTheme('dark');
-            });
-
-            document.getElementById('lightThemeBtn').addEventListener('click', () => {
-                switchTheme('light');
-            });
 
             function switchTheme(theme) {
                 if (themeStylesheet) {
-                    if (theme === 'dark') {
-                      themeStylesheet.href = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-funky.min.css";
-                      themeStylesheet.href = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css";
-                      themeStylesheet.href = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css";
-                    } else if (theme === 'light') {
-                      themeStylesheet.href = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-solarizedlight.min.css";
-                      themeStylesheet.href = "https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-base16-ateliersulphurpool.light.min.css";
-
+                    if (theme === 'prism-tomorrow') {
+                        themeStylesheet.href = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css";
+                    } else if (theme === 'prism-base16-ateliersulphurpool') {
+                        themeStylesheet.href = "https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-base16-ateliersulphurpool.light.min.css";
+                    } else if (theme === 'prism-okaidia') {
+                        themeStylesheet.href = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css";
                     }
                 } else {
                     console.error("テーマのスタイルシートが見つかりません。");
                 }
             }
+
+            // プルダウンの選択変更時にテーマを切り替え
+            themeSelector.addEventListener('change', (event) => {
+                switchTheme(event.target.value);
+            });
 
             // 初期化
             Prism.highlightAll();
