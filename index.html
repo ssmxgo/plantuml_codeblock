@@ -6,6 +6,8 @@
     <title>VSCodeライクエディタ（T-SQLシンタックスハイライト版）</title>
     <link id="themeStylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <!-- 行番号表示用のプラグイン -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
     <style>
         body, html {
             margin: 0;
@@ -22,20 +24,6 @@
             display: flex;
             height: 100vh;
             overflow: hidden;
-        }
-        .line-numbers {
-            width: 60px;
-            padding: 10px 0 10px 0;
-            text-align: right;
-            background-color: #1e1e1e;
-            color: #858585;
-            user-select: none;
-            overflow-y: hidden;
-        }
-        .line-numbers div {
-            padding-right: 10px;
-            height: 20px;
-            line-height: 20px;
         }
         .editor-wrapper {
             flex-grow: 1;
@@ -90,10 +78,11 @@
 </head>
 <body>
     <div class="editor-container">
-        <div class="line-numbers" id="lineNumbers"></div>
         <div class="editor-wrapper">
             <textarea id="codeInput" spellcheck="false" wrap="off"></textarea>
-            <pre style="margin:0; height: -webkit-fill-available;"><code id="highlightedCode" class="language-sql"></code></pre>
+            <pre class="line-numbers" style="margin:0; height: -webkit-fill-available;">
+                <code id="highlightedCode" class="language-sql"></code>
+            </pre>
         </div>
     </div>
 
@@ -120,14 +109,8 @@
 
         const codeInput = document.getElementById('codeInput');
         const highlightedCode = document.getElementById('highlightedCode');
-        const lineNumbers = document.getElementById('lineNumbers');
         const themeSelector = document.getElementById('themeSelector');
         const fontSizeSelector = document.getElementById('fontSizeSelector');
-
-        function updateLineNumbers() {
-            const lines = codeInput.value.split('\n');
-            lineNumbers.innerHTML = lines.map((_, index) => `<div>${index + 1}</div>`).join('');
-        }
 
         function updateHighlightedCode() {
             highlightedCode.textContent = codeInput.value;
@@ -137,7 +120,6 @@
         function syncScroll() {
             highlightedCode.scrollTop = codeInput.scrollTop;
             highlightedCode.scrollLeft = codeInput.scrollLeft;
-            lineNumbers.scrollTop = codeInput.scrollTop;
         }
 
         function updateFontSize(size) {
@@ -148,7 +130,6 @@
         }
 
         codeInput.addEventListener('input', () => {
-            updateLineNumbers();
             updateHighlightedCode();
         });
 
@@ -167,7 +148,6 @@
         });
 
         // 初期化
-        updateLineNumbers();
         updateHighlightedCode();
 
         document.addEventListener('DOMContentLoaded', function() {
