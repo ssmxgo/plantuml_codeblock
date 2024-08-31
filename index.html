@@ -15,7 +15,6 @@
         }
         .line-numbers {
             width: 60px;
-            padding: 10px 0;
             text-align: right;
             background-color: #1e1e1e;
             color: #858585;
@@ -23,6 +22,8 @@
             overflow-y: hidden;
             font-size: 14px;
             line-height: 20px;
+            /* padding-top: 10px; -> Bootstrapのpy-2クラスで置き換え */
+            /* padding-bottom: 10px; -> Bootstrapのpy-2クラスで置き換え */
         }
         .editor-wrapper {
             position: relative;
@@ -60,28 +61,32 @@
 </head>
 <body>
     <div class="container-fluid p-0">
-        <div class="row g-0 editor-container">
-            <div class="col-auto line-numbers" id="lineNumbers"></div>
+        <div class="row g-0">
+            <div class="col-auto line-numbers py-2" id="lineNumbers"></div>
             <div class="col editor-wrapper">
                 <textarea id="codeInput" spellcheck="false" wrap="off"></textarea>
-                <pre style="margin:0; height: 100%;"><code id="highlightedCode" class="language-sql"></code></pre>
+                <pre class="m-0 h-100"><code id="highlightedCode" class="language-sql"></code></pre>
             </div>
         </div>
 
         <div class="d-flex justify-content-start p-2">
             <!-- テーマセレクター -->
-            <label for="themeSelector" class="form-label me-2">Choose a theme:</label>
-            <select id="themeSelector" class="form-select form-select-sm w-auto">
-                <!-- ここにオプションが動的に生成されます -->
-            </select>
+            <div class="me-3">
+                <label for="themeSelector" class="form-label">Choose a theme:</label>
+                <select id="themeSelector" class="form-select form-select-sm">
+                    <!-- ここにオプションが動的に生成されます -->
+                </select>
+            </div>
 
             <!-- フォントサイズセレクター -->
-            <label for="fontSizeSelector" class="form-label ms-3 me-2">Font Size:</label>
-            <select id="fontSizeSelector" class="form-select form-select-sm w-auto">
-                <option value="small">Small</option>
-                <option value="medium" selected>Medium</option>
-                <option value="large">Large</option>
-            </select>
+            <div>
+                <label for="fontSizeSelector" class="form-label">Font Size:</label>
+                <select id="fontSizeSelector" class="form-select form-select-sm">
+                    <option value="small">Small</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="large">Large</option>
+                </select>
+            </div>
         </div>
     </div>
 
