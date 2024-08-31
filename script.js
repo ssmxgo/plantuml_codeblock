@@ -1,3 +1,15 @@
+const themeConfig = {
+  'prism-tomorrow': 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css',
+  'prism-base16-ateliersulphurpool': 'https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-base16-ateliersulphurpool.light.min.css',
+  'prism-okaidia': 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css'
+};
+
+const fontSizeConfig = {
+  'small': '12px',
+  'medium': '14px',
+  'large': '18px'
+};
+
 // デバッグ用：サンプルコードの挿入
 codeInput.value = `@startuml
 title ソフトウェア開発プロセス

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VSCodeライクエディタ（T-SQLシンタックスハイライト版）</title>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+CJK+JP:wght@400;700&family=Noto+Sans+CJK+KR:wght@400;700&family=Noto+Sans+CJK+SC:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+CJK+JP:wght@400;700&family=Noto+Sans+CJK+KR:wght@400;700&family=Noto+Sans+CJK+SC:wght@400;700&display=swap"></noscript>
     <link id="themeStylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
@@ -38,6 +40,7 @@
             line-height: 20px;
         }
         .editor-wrapper {
+            font-family: 'Consolas', 'Courier New', 'Noto Sans CJK SC', 'Noto Sans CJK KR', 'Menlo', 'Monaco', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'MS Gothic', 'NSimSun', 'GulimChe', 'Courier',   'monospace';
             flex-grow: 1;
             position: relative;
             overflow: hidden;
@@ -104,15 +107,25 @@
         <option value="prism-tomorrow">Prism Tomorrow</option>
         <option value="prism-base16-ateliersulphurpool">Prism Base16 Atelier Sulphurpool</option>
     </select>
+
+    <!-- プルダウンメニューを使用してフォントサイズを切り替える -->
+    <label for="fontSizeSelector">Font Size:</label>
+    <select id="fontSizeSelector">
+        <option value="small">Small</option>
+        <option value="medium" selected>Medium</option>
+        <option value="large">Large</option>
+    </select>
   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
     <script src="script.js"></script>
     <script>
+
         const codeInput = document.getElementById('codeInput');
         const highlightedCode = document.getElementById('highlightedCode');
         const lineNumbers = document.getElementById('lineNumbers');
         const themeSelector = document.getElementById('themeSelector');
+        const fontSizeSelector = document.getElementById('fontSizeSelector');
 
         function updateLineNumbers() {
             const lines = codeInput.value.split('\n');
@@ -128,6 +141,13 @@
             highlightedCode.scrollTop = codeInput.scrollTop;
             highlightedCode.scrollLeft = codeInput.scrollLeft;
             lineNumbers.scrollTop = codeInput.scrollTop;
+        }
+
+        function updateFontSize(size) {
+            if (fontSizeConfig[size]) {
+                codeInput.style.fontSize = fontSizeConfig[size];
+                highlightedCode.style.fontSize = fontSizeConfig[size];
+            }
         }
 
         codeInput.addEventListener('input', () => {
@@ -157,14 +177,8 @@
             const themeStylesheet = document.getElementById('themeStylesheet');
 
             function switchTheme(theme) {
-                if (themeStylesheet) {
-                    if (theme === 'prism-tomorrow') {
-                        themeStylesheet.href = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css";
-                    } else if (theme === 'prism-base16-ateliersulphurpool') {
-                        themeStylesheet.href = "https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-base16-ateliersulphurpool.light.min.css";
-                    } else if (theme === 'prism-okaidia') {
-                        themeStylesheet.href = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css";
-                    }
+                if (themeStylesheet && themeConfig[theme]) {
+                    themeStylesheet.href = themeConfig[theme];
                 } else {
                     console.error("テーマのスタイルシートが見つかりません。");
                 }
@@ -173,6 +187,11 @@
             // プルダウンの選択変更時にテーマを切り替え
             themeSelector.addEventListener('change', (event) => {
                 switchTheme(event.target.value);
+            });
+
+            // プルダウンの選択変更時にフォントサイズを切り替え
+            fontSizeSelector.addEventListener('change', (event) => {
+                updateFontSize(event.target.value);
             });
 
             // 初期化
