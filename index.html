@@ -28,12 +28,20 @@
             line-height: 20px;
             padding-top: 8px;
             padding-bottom: 8px;
+            position: fixed; /* 行番号エリアを固定位置に変更 */
+            top: 56px; /* タブの高さを考慮 */
+            bottom: 0;
+            overflow-x: hidden;
+            z-index: 3;
         }
 
         .editor-wrapper {
-            position: relative;
+            position: absolute; /* 絶対配置に変更 */
+            top: 56px; /* タブの高さを考慮 */
+            left: 60px; /* 行番号エリアの幅を考慮 */
+            right: 0;
+            bottom: 0;
             overflow: hidden;
-            height: 100%;
         }
 
         #codeInput,
@@ -54,7 +62,6 @@
             resize: none;
             outline: none;
             border: none;
-            padding: 8px;
             margin: 0;
         }
 
@@ -98,8 +105,8 @@
                 <div class="row g-0 h-100">
                     <div class="col-auto line-numbers" id="lineNumbers"></div>
                     <div class="col editor-wrapper">
-                        <textarea id="codeInput" spellcheck="false" wrap="off" class="p-0"></textarea>
-                        <pre class="m-0 h-100 p-0"><code id="highlightedCode" class="language-sql"></code></pre>
+                        <textarea id="codeInput" class="p-2" spellcheck="false" wrap="off"></textarea>
+                        <pre class="m-0 h-100 p-0"><code id="highlightedCode" class="language-sql p-2"></code></pre>
                     </div>
                 </div>
             </div>
